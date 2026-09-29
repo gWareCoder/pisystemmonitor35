@@ -6,7 +6,15 @@ from typing import Dict, Any
 
 
 def get_network_info() -> Dict[str, str]:
-    """Retrieve hostname and primary LAN IPv4 address."""
+    """Retrieve current user, hostname, and primary LAN IPv4 address."""
+    import getpass
+    user = os.environ.get("USER") or os.environ.get("LOGNAME")
+    if not user:
+        try:
+            user = getpass.getuser()
+        except Exception:
+            user = "user"
+
     hostname = socket.gethostname()
     ip_addr = "127.0.0.1"
 
@@ -28,7 +36,7 @@ def get_network_info() -> Dict[str, str]:
             for addr in interfaces[iface]:
                 if addr.family == socket.AF_INET and not addr.address.startswith("127."):
                     ip_addr = addr.address
-                    return {"hostname": hostname, "ip": ip_addr}
+                    return {"user": user, "hostname": hostname, "ip": ip_addr}
     except Exception:
         pass
 
@@ -41,7 +49,7 @@ def get_network_info() -> Dict[str, str]:
     except Exception:
         pass
 
-    return {"hostname": hostname, "ip": ip_addr}
+    return {"user": user, "hostname": hostname, "ip": ip_addr}
 
 
 def get_ram_metrics() -> Dict[str, Any]:

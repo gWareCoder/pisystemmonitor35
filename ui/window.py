@@ -69,7 +69,9 @@ class MainWindow(QMainWindow):
         storage = data.get("storage", {})
         net = storage.get("network", {})
         if net and "hostname" in net and "ip" in net:
-            self.host_ip_label.setText(f"{net['hostname']} • {net['ip']}")
+            u = net.get("user", "")
+            prefix = f"{u}@" if u else ""
+            self.host_ip_label.setText(f"{prefix}{net['hostname']} • {net['ip']}")
 
     def init_ui(self):
         container = QWidget(self)
@@ -103,11 +105,13 @@ class MainWindow(QMainWindow):
         header_layout.addWidget(self.date_label)
         header_layout.addStretch()
 
-        # Hostname & IP Address in header
+        # User, Hostname & IP Address in header
         from monitor.system_info import get_network_info
         init_net = get_network_info()
-        self.host_ip_label = QLabel(f"{init_net['hostname']} • {init_net['ip']}")
-        self.host_ip_label.setStyleSheet("color: #58a6ff; font-weight: 700; font-size: 9.5px; background: #21262d; border: 1px solid #30363d; border-radius: 3px; padding: 1px 5px;")
+        u = init_net.get("user", "")
+        prefix = f"{u}@" if u else ""
+        self.host_ip_label = QLabel(f"{prefix}{init_net['hostname']} • {init_net['ip']}")
+        self.host_ip_label.setStyleSheet("color: #58a6ff; font-weight: 700; font-size: 9px; background: #21262d; border: 1px solid #30363d; border-radius: 3px; padding: 1px 5px;")
         header_layout.addWidget(self.host_ip_label)
 
         # Optional exit button for touchscreen
