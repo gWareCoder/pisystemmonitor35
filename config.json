@@ -1,0 +1,29 @@
+{
+  "display": {
+    "target_output": "SPI-1",
+    "borderless": true,
+    "fullscreen": false,
+    "width": 480,
+    "height": 320,
+    "x": 0,
+    "y": 0
+  },
+  "refresh_intervals": {
+    "system_seconds": 1.5,
+    "market_seconds": 60,
+    "tokens_seconds": 10,
+    "bluetooth_seconds": 5
+  },
+  "antigravity": {
+    "plan_name": "Google AI Pro",
+    "plan_token_budget": 500000,
+    "rolling_window_hours": 5
+  },
+  "market": {
+    "symbols": ["^IXIC", "^DJI"],
+    "display_names": {
+      "^IXIC": "NDX",
+      "^DJI": "DOW"
+    }
+  }
+}

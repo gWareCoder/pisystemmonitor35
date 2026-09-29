@@ -1,0 +1,7 @@
+__pycache__/
+*.py[cod]
+*$py.class
+*.bak
+.cache/
+market_cache.json
+/preview.png
