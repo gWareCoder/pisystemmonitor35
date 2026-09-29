@@ -102,23 +102,46 @@ def remove_autostart_entry():
 
 
 def install_desktop_shortcut():
-    """Create executable shortcut on ~/Desktop, ~/.local/share/applications, and install icons."""
+    """Create executable shortcut on ~/Desktop, ~/.local/share/applications, and install multi-size icons."""
     desktop_dir = os.path.expanduser("~/Desktop")
     apps_dir = os.path.expanduser("~/.local/share/applications")
-    icons_dir = os.path.expanduser("~/.local/share/icons/hicolor/128x128/apps")
     pixmaps_dir = os.path.expanduser("~/.local/share/pixmaps")
+    hicolor_base = os.path.expanduser("~/.local/share/icons/hicolor")
 
     os.makedirs(desktop_dir, exist_ok=True)
     os.makedirs(apps_dir, exist_ok=True)
-    os.makedirs(icons_dir, exist_ok=True)
     os.makedirs(pixmaps_dir, exist_ok=True)
 
-    icon_src = os.path.join(CURRENT_DIR, "resources", "icon.png")
-    if os.path.exists(icon_src):
-        shutil.copyfile(icon_src, os.path.join(icons_dir, "spi1-system-monitor.png"))
-        shutil.copyfile(icon_src, os.path.join(pixmaps_dir, "spi1-system-monitor.png"))
-        print(f"Installed app icon to {icons_dir} and {pixmaps_dir}")
+    # 1. Install all standard icon resolutions (16, 24, 32, 48, 64, 128, 256)
+    sizes = [16, 24, 32, 48, 64, 128, 256]
+    res_dir = os.path.join(CURRENT_DIR, "resources")
 
+    for sz in sizes:
+        sz_dir = os.path.join(hicolor_base, f"{sz}x{sz}", "apps")
+        os.makedirs(sz_dir, exist_ok=True)
+        src = os.path.join(res_dir, f"icon_{sz}.png")
+        if not os.path.exists(src) and sz == 128:
+            src = os.path.join(res_dir, "icon.png")
+
+        if os.path.exists(src):
+            dst = os.path.join(sz_dir, "spi1-system-monitor.png")
+            shutil.copyfile(src, dst)
+            # Also create alias for main.py in case taskbar queries script name
+            shutil.copyfile(src, os.path.join(sz_dir, "main.py.png"))
+
+    # Also install to pixmaps
+    main_icon = os.path.join(res_dir, "icon.png")
+    if os.path.exists(main_icon):
+        shutil.copyfile(main_icon, os.path.join(pixmaps_dir, "spi1-system-monitor.png"))
+        shutil.copyfile(main_icon, os.path.join(pixmaps_dir, "main.py.png"))
+
+    # Try updating icon cache
+    try:
+        subprocess.run(["gtk-update-icon-cache", "-f", "-t", hicolor_base], check=False, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    except Exception:
+        pass
+
+    # 2. Desktop file content (Use icon name so GtkIconTheme finds exact size match)
     content = f"""[Desktop Entry]
 Type=Application
 Version=1.0
@@ -126,7 +149,7 @@ Name=3.5" SPI-1 System Monitor
 GenericName=System Monitor
 Comment=Hardware and System Monitor for 3.5 inch SPI-1 Display
 Exec={RUN_SCRIPT}
-Icon={icon_src}
+Icon=spi1-system-monitor
 Terminal=false
 Categories=System;Monitor;Utility;
 StartupNotify=true
@@ -150,6 +173,12 @@ Exec={RUN_SCRIPT} --windowed
         f.write(content)
     os.chmod(app_file, 0o755)
     print(f"Created application menu entry at {app_file}")
+
+    # Also alias main.py.desktop in case compositor looks up script name
+    main_py_desktop = os.path.join(apps_dir, "main.py.desktop")
+    with open(main_py_desktop, "w") as f:
+        f.write(content)
+    os.chmod(main_py_desktop, 0o755)
 
 
 if __name__ == "__main__":

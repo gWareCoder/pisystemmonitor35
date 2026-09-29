@@ -223,7 +223,7 @@ python3 install_rules.py
 This performs the following actions safely:
 1. Backs up `~/.config/labwc/rc.xml` to `rc.xml.bak`.
 2. Adds a `<windowRule>` for `spi1-system-monitor` to remove window borders and snap to `SPI-1`.
-3. Installs the application icon into `~/.local/share/icons/` and `~/.local/share/pixmaps/`.
+3. Installs multi-resolution application icons (16, 24, 32, 48, 64, 128, 256) into `~/.local/share/icons/hicolor/` and `~/.local/share/pixmaps/` so the taskbar displays the app icon when running.
 4. Creates the desktop shortcut at `~/Desktop/spi1-system-monitor.desktop`.
 5. Sends `SIGHUP` to `labwc` to reload the new configuration.
 
@@ -290,7 +290,8 @@ spi1-system-monitor/
 │   ├── preview.png          # Screenshot of the 480x320 UI
 │   └── icon.png             # Application icon
 ├── resources/
-│   └── icon.png             # 128x128 high-resolution window and taskbar icon
+│   ├── icon.png             # Master 128x128 high-resolution window and taskbar icon
+│   └── icon_*.png           # Multi-resolution icons (16, 24, 32, 48, 64, 128, 256)
 ├── monitor/
 │   ├── __init__.py
 │   ├── cpu.py               # CPU utilization, cores, and SoC temperature

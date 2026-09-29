@@ -8,8 +8,9 @@ cd "$DIR"
 # Ensure environment variables for Wayland / X11
 export DISPLAY="${DISPLAY:-:0}"
 if [ -n "$WAYLAND_DISPLAY" ]; then
-    # Prefer xcb or wayland
-    export QT_QPA_PLATFORM="${QT_QPA_PLATFORM:-xcb}"
+    # Let Qt use native Wayland or xcb fallback
+    export QT_QPA_PLATFORM="${QT_QPA_PLATFORM:-wayland;xcb}"
 fi
 
-python3 "$DIR/main.py" "$@"
+# Run with process identity spi1-system-monitor so WM_CLASS and app_id match desktop file
+exec -a spi1-system-monitor python3 "$DIR/main.py" "$@"

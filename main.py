@@ -98,19 +98,30 @@ def main():
     QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps, True)
 
     from PyQt5.QtGui import QIcon
+    from PyQt5.QtCore import QSize
 
-    app = QApplication(sys.argv)
+    # Enforce process identity for X11 WM_CLASS and Wayland app_id
+    sys.argv[0] = "spi1-system-monitor"
+    app = QApplication(["spi1-system-monitor"] + sys.argv[1:])
     app.setApplicationName("spi1-system-monitor")
-    app.setDesktopFileName("spi1-system-monitor")
+    app.setApplicationDisplayName("3.5\" SPI-1 System Monitor")
+    app.setDesktopFileName("spi1-system-monitor.desktop")
 
-    icon_path = os.path.join(current_dir, "resources", "icon.png")
-    if os.path.exists(icon_path):
-        app_icon = QIcon(icon_path)
-        app.setWindowIcon(app_icon)
+    # Build multi-resolution icon for taskbar and window switchers
+    res_dir = os.path.join(current_dir, "resources")
+    app_icon = QIcon()
+    for sz in [16, 24, 32, 48, 64, 128, 256]:
+        p = os.path.join(res_dir, f"icon_{sz}.png")
+        if os.path.exists(p):
+            app_icon.addFile(p, QSize(sz, sz))
+    main_icon = os.path.join(res_dir, "icon.png")
+    if os.path.exists(main_icon):
+        app_icon.addFile(main_icon)
+
+    app.setWindowIcon(app_icon)
 
     window = MainWindow(config)
-    if os.path.exists(icon_path):
-        window.setWindowIcon(QIcon(icon_path))
+    window.setWindowIcon(app_icon)
     window.place_on_target_screen()
 
     sys.exit(app.exec_())
