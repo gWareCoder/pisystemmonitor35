@@ -118,11 +118,11 @@ def get_process_name(pid: int) -> str:
     return f"PID {pid}"
 
 
-def get_gpu_utilization_and_process() -> tuple:
+def get_gpu_usage_and_process() -> tuple:
     """
-    Calculate GPU utilization percentage and identify the process
+    Calculate GPU usage percentage and identify the process
     actively causing GPU load using DRM fdinfo engine counters.
-    Returns (utilization_percent, active_process_name, active_proc_percent).
+    Returns (usage_percent, active_process_name, active_proc_percent).
     """
     global _last_sample_time, _last_engine_ns, _last_pid_ns
     current_time = time.time()
@@ -173,20 +173,27 @@ def get_gpu_utilization_and_process() -> tuple:
     return usage_percent, top_proc, top_proc_pct
 
 
-def get_gpu_utilization_percent() -> float:
-    """Calculate GPU utilization percentage (backwards compatibility)."""
-    util, _, _ = get_gpu_utilization_and_process()
-    return util
+get_gpu_utilization_and_process = get_gpu_usage_and_process
+
+
+def get_gpu_usage_percent() -> float:
+    """Calculate GPU usage percentage."""
+    usage, _, _ = get_gpu_usage_and_process()
+    return usage
+
+
+get_gpu_utilization_percent = get_gpu_usage_percent
 
 
 def get_gpu_metrics() -> dict:
     """Collect full GPU metrics for Raspberry Pi 5 including active process."""
     clock_mhz = get_v3d_clock_mhz()
     memory_mb = get_gpu_bo_memory_mb()
-    utilization, active_proc, active_proc_pct = get_gpu_utilization_and_process()
+    gpu_usage, active_proc, active_proc_pct = get_gpu_usage_and_process()
 
     return {
-        "utilization_percent": utilization,
+        "usage_percent": gpu_usage,
+        "utilization_percent": gpu_usage,
         "clock_mhz": clock_mhz,
         "memory_mb": memory_mb,
         "active_process": active_proc,

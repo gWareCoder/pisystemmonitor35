@@ -40,8 +40,8 @@ A high-performance, hardware-accelerated, dark-themed system monitor tailored sp
 - **User, Hostname & LAN IP Address**: Displays `user@hostname • ip` (e.g. `tomg@sandbox • 127.0.0.1` or `tomg@rpi5 • 192.168.1.142`) inside a clean styled badge in the top-right header bar.
 - **Live Time & Date**: Digital clock with seconds (`HH:MM:SS`) and formatted date (`Day, Month Date`).
 - **RAM & Root Disk Storage in GB**: Real-time display of system memory used, available, and total in GB (e.g. `1.6G / 15.8G (13.9G rem)`) plus root partition (`/`) disk space used and free in GB with dedicated progress meters.
-- **Live CPU & SoC Temperature**: Overall CPU utilization %, per-core 4-core mini meter bars, dynamic green/amber/red color transitions, and SoC thermal temperature (°C).
-- **Broadcom VideoCore VII (v3d) GPU Tracking**: Real-time DRM engine utilization %, dynamic GPU clock frequency (up to 960 MHz), allocated buffer memory (`bo_stats`), and the active running process driving GPU utilization (e.g. `Active: labwc (15.6%)`).
+- **Live CPU & SoC Temperature**: Overall CPU load %, per-core 4-core mini meter bars, dynamic green/amber/red color transitions, and SoC thermal temperature (°C).
+- **Broadcom VideoCore VII (v3d) GPU Tracking**: Real-time DRM engine load %, dynamic GPU clock frequency (up to 960 MHz), allocated buffer memory (`bo_stats`), and the active running process driving GPU activity (e.g. `Active: labwc (15.6%)`).
 - **Connected Bluetooth Device Batteries**: Live battery percentage badges and status bars for connected peripherals (headphones, mice, keyboards, controllers) via BlueZ D-Bus and UPower.
 - **Top 2 CPU & Top 2 Memory Processes**: High-legibility process cards showcasing the top two consumers of processing and memory with process name, PID, and percentage badges.
 - **Market Tickers (NASDAQ & DOW)**: Live quotes for NASDAQ (`NDX`) and Dow Jones (`DOW`) with point change and percentage change color coding (+ green / - red), backed by an offline cache.
@@ -140,7 +140,7 @@ To guarantee that the application always opens on the `SPI-1` display:
 ```
 
 - **CPU & Thermals** ([`monitor/cpu.py`](monitor/cpu.py)): Samples overall CPU percentage and per-core loads via `psutil`. Reads temperature from `/sys/class/thermal/thermal_zone0/temp` and `vcgencmd measure_temp`.
-- **GPU Metrics** ([`monitor/gpu.py`](monitor/gpu.py)): Scans `/proc/<pid>/fdinfo/<fd>` for processes utilizing `v3d` (`drm-engine-fragment`, `bin`, `compute`, `render`, `tfu`) and calculates per-process delta active nanoseconds over elapsed time to identify the exact running process driving GPU utilization. Clock speed is gathered from `vcgencmd measure_clock v3d` (up to 960 MHz). Buffer memory allocation is read from `/sys/kernel/debug/dri/0/bo_stats`.
+- **GPU Metrics** ([`monitor/gpu.py`](monitor/gpu.py)): Scans `/proc/<pid>/fdinfo/<fd>` for processes using `v3d` (`drm-engine-fragment`, `bin`, `compute`, `render`, `tfu`) and calculates per-process delta active nanoseconds over elapsed time to identify the exact running process driving GPU load. Clock speed is gathered from `vcgencmd measure_clock v3d` (up to 960 MHz). Buffer memory allocation is read from `/sys/kernel/debug/dri/0/bo_stats`.
 - **RAM & Disk Storage** ([`monitor/system_info.py`](monitor/system_info.py)): Converts system virtual memory and root partition disk usage to GB (used, free/remaining, total, and percentage).
 - **User, Hostname & LAN IP** ([`monitor/system_info.py`](monitor/system_info.py)): Detects current active user (`os.environ['USER']` / `getpass.getuser()`), system hostname (`socket.gethostname()`), and traverses active network adapters (`wlan0`, `eth0`) for the primary IPv4 address.
 - **Bluetooth Battery Reporting** ([`monitor/bluetooth.py`](monitor/bluetooth.py)): Connects to the system D-Bus and enumerates objects under `org.bluez.Device1` that have an active `org.bluez.Battery1` interface to read the `Percentage` property. Falls back to `org.freedesktop.UPower` for standard wireless mice/keyboards.
@@ -153,7 +153,7 @@ Total window size is **480x320 pixels**:
 - **Header Bar (24px)**: Time (`HH:MM:SS`), date (`Day, Month Date`), and `user@hostname • ip` badge.
 - **Ticker Ribbon (20px)**: Compact status line with live points and % change for NASDAQ and DOW, plus Antigravity quota tokens.
 - **Left Column (~225px)**:
-  - CPU Utilization Card (~64px)
+  - CPU Card (~64px)
   - GPU VideoCore VII Card (~54px)
   - RAM & Disk Storage Card (~66px)
   - Bluetooth Batteries Card (~64px)
@@ -295,7 +295,7 @@ spi1-system-monitor/
 │   └── icon_*.png           # Multi-resolution icons (16, 24, 32, 48, 64, 128, 256)
 ├── monitor/
 │   ├── __init__.py
-│   ├── cpu.py               # CPU utilization, cores, and SoC temperature
+│   ├── cpu.py               # CPU load, cores, and SoC temperature
 │   ├── gpu.py               # VideoCore VII (v3d) DRM engine & clock speed
 │   ├── system_info.py       # RAM, Disk, Hostname, User, and LAN IP address
 │   ├── bluetooth.py         # BlueZ D-Bus / UPower Bluetooth battery monitor

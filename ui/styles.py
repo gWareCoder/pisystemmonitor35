@@ -118,7 +118,7 @@ QPushButton.tabButton:checked {
 
 
 def get_meter_color(percentage: float) -> str:
-    """Return color hex string according to utilization."""
+    """Return color hex string according to percentage load."""
     if percentage >= 85.0:
         return "#f85149"  # Danger red
     elif percentage >= 60.0:

@@ -5,7 +5,7 @@ from typing import Dict, List, Any
 
 def get_top_processes(top_n: int = 2) -> Dict[str, List[Dict[str, Any]]]:
     """
-    Get top N processes for CPU and Memory utilization.
+    Get top N processes for CPU and Memory usage.
     Returns:
         {
             "cpu": [{"pid": ..., "name": ..., "cpu_percent": ..., "mem_percent": ...}],

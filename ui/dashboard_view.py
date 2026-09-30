@@ -89,7 +89,7 @@ class DashboardView(QWidget):
         # GPU Meter
         self.gpu_meter = CompactMeter(height=5)
 
-        # Active process causing GPU utilization
+        # Active process causing GPU load
         self.gpu_proc = QLabel("Active: Idle")
         self.gpu_proc.setStyleSheet("color: #8b949e; font-size: 8px; font-weight: 600; background: transparent;")
 
@@ -249,7 +249,7 @@ class DashboardView(QWidget):
 
         # GPU
         gpu = data.get("gpu", {})
-        gpu_pct = gpu.get("utilization_percent", 0.0)
+        gpu_pct = gpu.get("usage_percent", gpu.get("utilization_percent", 0.0))
         self.gpu_val.setText(f"{gpu_pct:.1f}%")
         self.gpu_meter.set_percent(gpu_pct)
 
