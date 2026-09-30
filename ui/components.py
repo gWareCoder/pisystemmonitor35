@@ -148,10 +148,10 @@ class TickerRibbon(QFrame):
         super().__init__(parent)
         self.setObjectName("tickerBar")
         self.setProperty("class", "tickerBar")
-        self.setFixedHeight(19)
+        self.setFixedHeight(20)
 
         layout = QHBoxLayout(self)
-        layout.setContentsMargins(6, 0, 6, 0)
+        layout.setContentsMargins(6, 1, 6, 1)
         layout.setSpacing(8)
 
         # NASDAQ

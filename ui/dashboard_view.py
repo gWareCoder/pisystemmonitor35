@@ -87,12 +87,17 @@ class DashboardView(QWidget):
         # GPU Meter
         self.gpu_meter = CompactMeter(height=5)
 
+        # Active process causing GPU utilization
+        self.gpu_proc = QLabel("Active: Idle")
+        self.gpu_proc.setStyleSheet("color: #8b949e; font-size: 8px; font-weight: 600;")
+
         # GPU Subtext (Buffer memory)
         self.gpu_sub = QLabel("Buffer Alloc: 0.0 MB")
         self.gpu_sub.setStyleSheet("color: #6e7681; font-size: 8px;")
 
         gpu_layout.addLayout(gpu_head)
         gpu_layout.addWidget(self.gpu_meter)
+        gpu_layout.addWidget(self.gpu_proc)
         gpu_layout.addWidget(self.gpu_sub)
         left_col.addWidget(self.gpu_card)
 
@@ -167,7 +172,7 @@ class DashboardView(QWidget):
             bt_layout.addWidget(r)
         left_col.addWidget(self.bt_card)
 
-        main_layout.addLayout(left_col, stretch=45)
+        main_layout.addLayout(left_col, stretch=48)
 
         # ==========================================
         # RIGHT COLUMN (Width ~255px): Top 2 CPU & Top 2 Memory Processes
@@ -220,7 +225,7 @@ class DashboardView(QWidget):
         proc_mem_layout.addWidget(self.mem_row2)
         right_col.addWidget(self.proc_mem_card)
 
-        main_layout.addLayout(right_col, stretch=55)
+        main_layout.addLayout(right_col, stretch=52)
 
     def update_system_data(self, data: dict):
         """Update CPU, GPU, and Top 2 Processes."""
@@ -252,6 +257,19 @@ class DashboardView(QWidget):
 
         mem = gpu.get("memory_mb", 0.0)
         self.gpu_sub.setText(f"Buffer Alloc: {mem:.1f} MB")
+
+        active_proc = gpu.get("active_process", "Idle")
+        active_pct = gpu.get("active_proc_percent", 0.0)
+        if active_proc and active_proc.lower() != "idle" and (active_pct > 0 or gpu_pct >= 1.0):
+            disp_name = active_proc[:17] + "…" if len(active_proc) > 18 else active_proc
+            if active_pct > 0:
+                self.gpu_proc.setText(f"Active: {disp_name} ({active_pct:.1f}%)")
+            else:
+                self.gpu_proc.setText(f"Active: {disp_name}")
+            self.gpu_proc.setStyleSheet("color: #7ee787; font-size: 8px; font-weight: 600;")
+        else:
+            self.gpu_proc.setText("Active: Idle")
+            self.gpu_proc.setStyleSheet("color: #8b949e; font-size: 8px; font-weight: 600;")
 
         # RAM & Disk Storage
         storage = data.get("storage", {})
