@@ -2,10 +2,18 @@
 
 DARK_THEME = """
 QWidget {
-    background-color: #0e1117;
     color: #f0f6fc;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PibotoLt", "DejaVu Sans", Ubuntu, sans-serif;
     font-size: 10px;
+}
+
+QMainWindow, QWidget#centralWidget {
+    background-color: #0e1117;
+}
+
+QLabel {
+    background: transparent;
+    background-color: transparent;
 }
 
 QFrame.metricCard {

@@ -35,6 +35,14 @@ class CompactMeter(QProgressBar):
             }}
         """)
 
+    def sizeHint(self):
+        from PyQt5.QtCore import QSize
+        return QSize(20, self.height())
+
+    def minimumSizeHint(self):
+        from PyQt5.QtCore import QSize
+        return QSize(10, self.height())
+
 
 class ProcessRow(QWidget):
     """Single compact row for a process in Top 2 list."""
@@ -50,17 +58,17 @@ class ProcessRow(QWidget):
         top_row.setSpacing(5)
 
         self.rank_label = QLabel(f"#{rank}")
-        self.rank_label.setStyleSheet("color: #58a6ff; font-weight: 700; font-size: 10px;")
+        self.rank_label.setStyleSheet("color: #58a6ff; font-weight: 700; font-size: 10px; background: transparent;")
 
         self.name_label = QLabel("---")
-        self.name_label.setStyleSheet("color: #f0f6fc; font-weight: 600; font-size: 10px;")
+        self.name_label.setStyleSheet("color: #f0f6fc; font-weight: 600; font-size: 10px; background: transparent;")
 
         self.pid_label = QLabel("(---)")
-        self.pid_label.setStyleSheet("color: #6e7681; font-size: 8.5px;")
+        self.pid_label.setStyleSheet("color: #6e7681; font-size: 8.5px; background: transparent;")
 
         self.val_label = QLabel("0.0%")
         self.val_label.setAlignment(Qt.AlignRight | Qt.AlignVCenter)
-        self.val_label.setStyleSheet("color: #3fb950; font-weight: 700; font-size: 10px;")
+        self.val_label.setStyleSheet("color: #3fb950; font-weight: 700; font-size: 10px; background: transparent;")
 
         top_row.addWidget(self.rank_label)
         top_row.addWidget(self.name_label)
@@ -94,14 +102,14 @@ class BluetoothDeviceRow(QWidget):
         layout.setSpacing(5)
 
         self.icon_label = QLabel("⚡")
-        self.icon_label.setStyleSheet("color: #58a6ff; font-size: 9px;")
+        self.icon_label.setStyleSheet("color: #58a6ff; font-size: 9px; background: transparent;")
 
         self.name_label = QLabel("---")
-        self.name_label.setStyleSheet("color: #f0f6fc; font-weight: 500; font-size: 9px;")
+        self.name_label.setStyleSheet("color: #f0f6fc; font-weight: 500; font-size: 9px; background: transparent;")
         self.name_label.setMaximumWidth(110)
 
         self.battery_label = QLabel("--%")
-        self.battery_label.setStyleSheet("color: #3fb950; font-weight: 700; font-size: 9px;")
+        self.battery_label.setStyleSheet("color: #3fb950; font-weight: 700; font-size: 9px; background: transparent;")
 
         self.meter = QProgressBar()
         self.meter.setFixedSize(36, 6)
@@ -123,7 +131,7 @@ class BluetoothDeviceRow(QWidget):
             self.battery_label.setText(f"{battery}%")
             self.meter.setValue(battery)
             color = get_battery_color(battery)
-            self.battery_label.setStyleSheet(f"color: {color}; font-weight: 700; font-size: 9px;")
+            self.battery_label.setStyleSheet(f"color: {color}; font-weight: 700; font-size: 9px; background: transparent;")
             self.meter.setStyleSheet(f"""
                 QProgressBar {{
                     background-color: #21262d;
@@ -138,7 +146,7 @@ class BluetoothDeviceRow(QWidget):
             self.meter.show()
         else:
             self.battery_label.setText("N/A")
-            self.battery_label.setStyleSheet("color: #6e7681; font-size: 9px;")
+            self.battery_label.setStyleSheet("color: #6e7681; font-size: 9px; background: transparent;")
             self.meter.hide()
 
 
@@ -156,23 +164,23 @@ class TickerRibbon(QFrame):
 
         # NASDAQ
         self.ndx_label = QLabel("NDX: 18,200.0 (---)")
-        self.ndx_label.setStyleSheet("font-size: 8.5px; font-weight: 600; color: #8b949e;")
+        self.ndx_label.setStyleSheet("font-size: 8.5px; font-weight: 600; color: #8b949e; background: transparent;")
 
         # Divider 1
         dot1 = QLabel("•")
-        dot1.setStyleSheet("color: #30363d; font-size: 8px;")
+        dot1.setStyleSheet("color: #30363d; font-size: 8px; background: transparent;")
 
         # DOW
         self.dow_label = QLabel("DOW: 42,100.0 (---)")
-        self.dow_label.setStyleSheet("font-size: 8.5px; font-weight: 600; color: #8b949e;")
+        self.dow_label.setStyleSheet("font-size: 8.5px; font-weight: 600; color: #8b949e; background: transparent;")
 
         # Divider 2
         dot2 = QLabel("•")
-        dot2.setStyleSheet("color: #30363d; font-size: 8px;")
+        dot2.setStyleSheet("color: #30363d; font-size: 8px; background: transparent;")
 
         # Antigravity Tokens
         self.agy_label = QLabel("AGY: ---")
-        self.agy_label.setStyleSheet("font-size: 8.5px; font-weight: 700; color: #bc8cff;")
+        self.agy_label.setStyleSheet("font-size: 8.5px; font-weight: 700; color: #bc8cff; background: transparent;")
 
         layout.addWidget(self.ndx_label)
         layout.addWidget(dot1)
@@ -190,7 +198,7 @@ class TickerRibbon(QFrame):
             sign = "+" if pct >= 0 else ""
             color = "#3fb950" if pct >= 0 else "#f85149"
             self.ndx_label.setText(f"NDX: {price:,.1f} ({sign}{pct:.2f}%)")
-            self.ndx_label.setStyleSheet(f"font-size: 8.5px; font-weight: 600; color: {color};")
+            self.ndx_label.setStyleSheet(f"font-size: 8.5px; font-weight: 600; color: {color}; background: transparent;")
 
         # DOW
         dow = quotes.get("^DJI")
@@ -200,7 +208,7 @@ class TickerRibbon(QFrame):
             sign = "+" if pct >= 0 else ""
             color = "#3fb950" if pct >= 0 else "#f85149"
             self.dow_label.setText(f"DOW: {price:,.1f} ({sign}{pct:.2f}%)")
-            self.dow_label.setStyleSheet(f"font-size: 8.5px; font-weight: 600; color: {color};")
+            self.dow_label.setStyleSheet(f"font-size: 8.5px; font-weight: 600; color: {color}; background: transparent;")
 
     def update_tokens(self, token_data: dict):
         session = token_data.get("session_tokens", 0)

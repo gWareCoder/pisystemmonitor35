@@ -75,6 +75,7 @@ class MainWindow(QMainWindow):
 
     def init_ui(self):
         container = QWidget(self)
+        container.setObjectName("centralWidget")
         self.setCentralWidget(container)
         root_layout = QVBoxLayout(container)
         root_layout.setContentsMargins(0, 0, 0, 0)
@@ -91,14 +92,14 @@ class MainWindow(QMainWindow):
         # Time & Date display
         self.time_label = QLabel("00:00:00")
         self.time_label.setProperty("class", "timeLabel")
-        self.time_label.setStyleSheet("color: #ffffff; font-weight: 700; font-size: 11px;")
+        self.time_label.setStyleSheet("color: #ffffff; font-weight: 700; font-size: 11px; background: transparent;")
 
         self.date_sep = QLabel("•")
-        self.date_sep.setStyleSheet("color: #8b949e; font-size: 9px;")
+        self.date_sep.setStyleSheet("color: #8b949e; font-size: 9px; background: transparent;")
 
         self.date_label = QLabel("Mon, Jan 1")
         self.date_label.setProperty("class", "dateLabel")
-        self.date_label.setStyleSheet("color: #8b949e; font-weight: 500; font-size: 10px;")
+        self.date_label.setStyleSheet("color: #8b949e; font-weight: 500; font-size: 10px; background: transparent;")
 
         header_layout.addWidget(self.time_label)
         header_layout.addWidget(self.date_sep)

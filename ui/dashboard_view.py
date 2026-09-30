@@ -34,15 +34,16 @@ class DashboardView(QWidget):
         # CPU Header
         cpu_head = QHBoxLayout()
         cpu_head.setContentsMargins(0, 0, 0, 0)
-        cpu_title = QLabel("CPU UTILIZATION")
-        cpu_title.setStyleSheet("color: #8b949e; font-size: 8.5px; font-weight: 700;")
+        cpu_title = QLabel("CPU")
+        cpu_title.setStyleSheet("color: #8b949e; font-size: 8.5px; font-weight: 700; background: transparent;")
         self.cpu_val = QLabel("0.0%")
-        self.cpu_val.setStyleSheet("color: #58a6ff; font-size: 10px; font-weight: 700;")
+        self.cpu_val.setStyleSheet("color: #58a6ff; font-size: 10px; font-weight: 700; background: transparent;")
         self.cpu_temp = QLabel("--°C")
-        self.cpu_temp.setStyleSheet("color: #d29922; font-size: 9px; font-weight: 600;")
+        self.cpu_temp.setStyleSheet("color: #d29922; font-size: 9px; font-weight: 600; background: transparent;")
         cpu_head.addWidget(cpu_title)
         cpu_head.addStretch()
         cpu_head.addWidget(self.cpu_temp)
+        cpu_head.addSpacing(6)
         cpu_head.addWidget(self.cpu_val)
 
         # CPU Main Meter
@@ -74,14 +75,15 @@ class DashboardView(QWidget):
         gpu_head = QHBoxLayout()
         gpu_head.setContentsMargins(0, 0, 0, 0)
         gpu_title = QLabel("GPU (VC7 / v3d)")
-        gpu_title.setStyleSheet("color: #8b949e; font-size: 8.5px; font-weight: 700;")
+        gpu_title.setStyleSheet("color: #8b949e; font-size: 8.5px; font-weight: 700; background: transparent;")
         self.gpu_val = QLabel("0.0%")
-        self.gpu_val.setStyleSheet("color: #58a6ff; font-size: 10px; font-weight: 700;")
+        self.gpu_val.setStyleSheet("color: #58a6ff; font-size: 10px; font-weight: 700; background: transparent;")
         self.gpu_clk = QLabel("--- MHz")
-        self.gpu_clk.setStyleSheet("color: #bc8cff; font-size: 9px; font-weight: 600;")
+        self.gpu_clk.setStyleSheet("color: #bc8cff; font-size: 9px; font-weight: 600; background: transparent;")
         gpu_head.addWidget(gpu_title)
         gpu_head.addStretch()
         gpu_head.addWidget(self.gpu_clk)
+        gpu_head.addSpacing(6)
         gpu_head.addWidget(self.gpu_val)
 
         # GPU Meter
@@ -89,11 +91,11 @@ class DashboardView(QWidget):
 
         # Active process causing GPU utilization
         self.gpu_proc = QLabel("Active: Idle")
-        self.gpu_proc.setStyleSheet("color: #8b949e; font-size: 8px; font-weight: 600;")
+        self.gpu_proc.setStyleSheet("color: #8b949e; font-size: 8px; font-weight: 600; background: transparent;")
 
         # GPU Subtext (Buffer memory)
         self.gpu_sub = QLabel("Buffer Alloc: 0.0 MB")
-        self.gpu_sub.setStyleSheet("color: #6e7681; font-size: 8px;")
+        self.gpu_sub.setStyleSheet("color: #6e7681; font-size: 8px; background: transparent;")
 
         gpu_layout.addLayout(gpu_head)
         gpu_layout.addWidget(self.gpu_meter)
@@ -112,9 +114,9 @@ class DashboardView(QWidget):
         ram_head = QHBoxLayout()
         ram_head.setContentsMargins(0, 0, 0, 0)
         ram_title = QLabel("RAM")
-        ram_title.setStyleSheet("color: #8b949e; font-size: 8.5px; font-weight: 700;")
+        ram_title.setStyleSheet("color: #8b949e; font-size: 8.5px; font-weight: 700; background: transparent;")
         self.ram_val = QLabel("0.0G / 0.0G (0.0G rem)")
-        self.ram_val.setStyleSheet("color: #3fb950; font-size: 8.5px; font-weight: 600;")
+        self.ram_val.setStyleSheet("color: #3fb950; font-size: 8.5px; font-weight: 600; background: transparent;")
         ram_head.addWidget(ram_title)
         ram_head.addStretch()
         ram_head.addWidget(self.ram_val)
@@ -125,9 +127,9 @@ class DashboardView(QWidget):
         disk_head = QHBoxLayout()
         disk_head.setContentsMargins(0, 1, 0, 0)
         disk_title = QLabel("DISK (/)")
-        disk_title.setStyleSheet("color: #8b949e; font-size: 8.5px; font-weight: 700;")
+        disk_title.setStyleSheet("color: #8b949e; font-size: 8.5px; font-weight: 700; background: transparent;")
         self.disk_val = QLabel("0.0G / 0.0G (0.0G rem)")
-        self.disk_val.setStyleSheet("color: #58a6ff; font-size: 8.5px; font-weight: 600;")
+        self.disk_val.setStyleSheet("color: #58a6ff; font-size: 8.5px; font-weight: 600; background: transparent;")
         disk_head.addWidget(disk_title)
         disk_head.addStretch()
         disk_head.addWidget(self.disk_val)
@@ -150,16 +152,16 @@ class DashboardView(QWidget):
         bt_head = QHBoxLayout()
         bt_head.setContentsMargins(0, 0, 0, 0)
         bt_title = QLabel("BLUETOOTH BATTERIES")
-        bt_title.setStyleSheet("color: #8b949e; font-size: 8.5px; font-weight: 700;")
+        bt_title.setStyleSheet("color: #8b949e; font-size: 8.5px; font-weight: 700; background: transparent;")
         self.bt_count = QLabel("0 connected")
-        self.bt_count.setStyleSheet("color: #6e7681; font-size: 8px;")
+        self.bt_count.setStyleSheet("color: #6e7681; font-size: 8px; background: transparent;")
         bt_head.addWidget(bt_title)
         bt_head.addStretch()
         bt_head.addWidget(self.bt_count)
 
         self.bt_empty_label = QLabel("No Bluetooth devices connected")
         self.bt_empty_label.setAlignment(Qt.AlignCenter)
-        self.bt_empty_label.setStyleSheet("color: #6e7681; font-size: 8px; padding: 2px 0px;")
+        self.bt_empty_label.setStyleSheet("color: #6e7681; font-size: 8px; padding: 2px 0px; background: transparent;")
 
         # Pre-allocate 2 device rows
         self.bt_rows = [BluetoothDeviceRow(), BluetoothDeviceRow()]
@@ -191,7 +193,7 @@ class DashboardView(QWidget):
         proc_cpu_head = QHBoxLayout()
         proc_cpu_head.setContentsMargins(0, 0, 0, 0)
         proc_cpu_title = QLabel("TOP 2 CPU PROCESSES")
-        proc_cpu_title.setStyleSheet("color: #8b949e; font-size: 8.5px; font-weight: 700;")
+        proc_cpu_title.setStyleSheet("color: #8b949e; font-size: 8.5px; font-weight: 700; background: transparent;")
         proc_cpu_head.addWidget(proc_cpu_title)
         proc_cpu_head.addStretch()
 
@@ -213,7 +215,7 @@ class DashboardView(QWidget):
         proc_mem_head = QHBoxLayout()
         proc_mem_head.setContentsMargins(0, 0, 0, 0)
         proc_mem_title = QLabel("TOP 2 MEMORY PROCESSES")
-        proc_mem_title.setStyleSheet("color: #8b949e; font-size: 8.5px; font-weight: 700;")
+        proc_mem_title.setStyleSheet("color: #8b949e; font-size: 8.5px; font-weight: 700; background: transparent;")
         proc_mem_head.addWidget(proc_mem_title)
         proc_mem_head.addStretch()
 
@@ -238,7 +240,7 @@ class DashboardView(QWidget):
         if temp > 0:
             self.cpu_temp.setText(f"{temp:.1f}°C")
             color = "#f85149" if temp >= 75.0 else ("#d29922" if temp >= 65.0 else "#3fb950")
-            self.cpu_temp.setStyleSheet(f"color: {color}; font-size: 9px; font-weight: 600;")
+            self.cpu_temp.setStyleSheet(f"color: {color}; font-size: 9px; font-weight: 600; background: transparent;")
 
         per_core = cpu.get("per_core", [])
         for i, val in enumerate(per_core[:4]):
@@ -266,10 +268,10 @@ class DashboardView(QWidget):
                 self.gpu_proc.setText(f"Active: {disp_name} ({active_pct:.1f}%)")
             else:
                 self.gpu_proc.setText(f"Active: {disp_name}")
-            self.gpu_proc.setStyleSheet("color: #7ee787; font-size: 8px; font-weight: 600;")
+            self.gpu_proc.setStyleSheet("color: #7ee787; font-size: 8px; font-weight: 600; background: transparent;")
         else:
             self.gpu_proc.setText("Active: Idle")
-            self.gpu_proc.setStyleSheet("color: #8b949e; font-size: 8px; font-weight: 600;")
+            self.gpu_proc.setStyleSheet("color: #8b949e; font-size: 8px; font-weight: 600; background: transparent;")
 
         # RAM & Disk Storage
         storage = data.get("storage", {})
